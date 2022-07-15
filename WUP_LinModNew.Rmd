@@ -33,51 +33,124 @@ data <- read.csv(file="https://onlinestatbook.com/case_studies_rvls/physical_str
 
 ## Model 1 SIM~ARMS
 
+
+
 ### scatterplot
+
+```{r}
+plot(SIMS~ARM,data=data)
+lmr=lm(SIMS~ARM, data = data)
+abline(lmr)
+```
+The scatter plot has a positive line that does an ok job at predicting the strength needed for the workers.
 
 ### Numerical results
 
+```{r}
+cor(SIMS~ARM,data=data)
+```
+The number coresponds with the graph in showing the correlation
 
 ### Inferential  (Build model.1)
 
+```{r}
+summary(lmr)
+newdata=c(GRIP=94,ARM=88)
+```
+p-value is .00000000000000022 with an adjusted r squared of 0.467
+
 #### Predict at target point
 
+```{r}
+predictSIM=predict.lm(lmr,newdata=data.frame(GRIP=94,ARM=88))
+print(predictSIM)
+```
+Predicted accuracy of plot,seems positive.
 
 #### scatterplot with model fit
   
+```{r}
+plot(lmr)
+```
+  The majority of the graphs seem to be a positive increasing slope and many are almost horizontal.
 
 ## Model 2 SIM~GRIP
 
 ### Now add in scatterplot
 
+```{r}
+plot(SIMS~GRIP,data=data)
+YUR=lm(SIMS~GRIP, data = data)
+abline(lmr)
+```
+The scatter plot has a positive line that does a worse job at predicting the strength needed for the workers. The original plot was better.
+
 
 ### Numerical results 
 
+```{r}
+cor(SIMS~GRIP,data=data)
+```
+The number coresponds with the graph in showing the correlation
 
 ### Inferential  (Build model.2)
   
+```{r}
+summary(YUR)
+newdata=c(GRIP=94,ARM=88)
+```
+p-value is .00000000000000022 with an adjusted r squared of 0.4053
+
 
 #### predict model.2 at target point
 
+```{r}
+predictSIM=predict.lm(YUR,newdata=data.frame(GRIP=94,ARM=88))
+print(predictSIM)
+```
+Predicted accuracy of plot,seems positive and is better then previous model.
+
 #### now add the model fit to our plot for model.2
   
+```{r}
+plot(YUR)
+```
+  The majority of the graphs seem to be a positive increasing slope and many are almost horizontal and do a better job of predicting outcomes.
 
 
 ## Model 3 SIM~ARM+GRIP
 
 ### Numerical results (cor)
 
-`
+````{r}
+data2=lm(SIMS~ARM+GRIP,data=data)
+summary(data2)
+```
+p-value is .00000000000000022 with an adjusted r squared of 0.5358 and a multiple r squared of 0.5422
+
   
 ### Inferential  (Build 2-dimentional model.3)
 
 #### predict model.3 at target point
   
+```{r}
+predict.lm(data2,newdata=data.frame(GRIP=94,ARM=88))
+```
+The number coresponds with the graph in showing the correlation
 
 ## Comparing nested models ANOVA Test
 
 ### Model.1 vs Model.3
+```{r}
+anova(lmr,data2)
+```
+
+
 ### Model.2 vs Model.3
 
-## Informally compare Model.1 with model.2
+```{r}
+anova(YUR,data2)
+```
 
+## Informally compare Model.1 with model.2
+Model 2 seems to be more accurate because if the higher decimal,4.994e-06 compared to 1.495e-09.
